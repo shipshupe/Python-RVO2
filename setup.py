@@ -17,16 +17,16 @@ class BuildRvo2Ext(_build_ext):
             os.makedirs(build_dir)
             subprocess.check_call(['cmake', '../..', '-DCMAKE_CXX_FLAGS=-fPIC'],
                                   cwd=build_dir)
-        subprocess.check_call(['cmake', '--build', '.'], cwd=build_dir)
+        subprocess.check_call(['cmake', '--build', '.', '--config', 'Release'], cwd=build_dir)
 
         _build_ext.run(self)
 
 
 extensions = [
-    Extension('rvo2', ['src/*.pyx'],
+    Extension('rvo2', ['src/*.pyx', 'src/RVOSimulator.cpp', 'src/rvo2.cpp', 'src/KdTree.cpp', 'src/Obstacle.cpp', 'src/Agent.cpp'],
               include_dirs=['src'],
               libraries=['RVO'],
-              library_dirs=['build/RVO2/src'],
+              library_dirs=['build/RVO2/src', 'build/RVO2/src/Release'],
               extra_compile_args=['-fPIC']),
 ]
 
